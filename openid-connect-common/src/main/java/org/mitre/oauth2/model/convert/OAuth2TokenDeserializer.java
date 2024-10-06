@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+//TODO: This class is not implemented
 @Component
 public class OAuth2TokenDeserializer extends JsonDeserializer<OAuth2AccessToken> {
 	@Override
