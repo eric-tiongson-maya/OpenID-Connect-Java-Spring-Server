@@ -19,8 +19,8 @@ package org.mitre.util.jpa;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 
 import org.mitre.data.PageCriteria;
 

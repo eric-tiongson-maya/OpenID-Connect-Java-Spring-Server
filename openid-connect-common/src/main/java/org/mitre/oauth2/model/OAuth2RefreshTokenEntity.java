@@ -20,28 +20,29 @@
  */
 package org.mitre.oauth2.model;
 
+import java.time.Instant;
 import java.util.Date;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.Transient;
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.Transient;
 
 import org.mitre.oauth2.model.convert.JWTStringConverter;
-import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 
 import com.nimbusds.jwt.JWT;
+import org.springframework.security.oauth2.core.OAuth2RefreshToken;
 
 /**
  * @author jricher
@@ -56,7 +57,7 @@ import com.nimbusds.jwt.JWT;
 	@NamedQuery(name = OAuth2RefreshTokenEntity.QUERY_BY_TOKEN_VALUE, query = "select r from OAuth2RefreshTokenEntity r where r.jwt = :" + OAuth2RefreshTokenEntity.PARAM_TOKEN_VALUE),
 	@NamedQuery(name = OAuth2RefreshTokenEntity.QUERY_BY_NAME, query = "select r from OAuth2RefreshTokenEntity r where r.authenticationHolder.userAuth.name = :" + OAuth2RefreshTokenEntity.PARAM_NAME)
 })
-public class OAuth2RefreshTokenEntity implements OAuth2RefreshToken {
+public class OAuth2RefreshTokenEntity extends OAuth2RefreshToken {
 
 	public static final String QUERY_BY_TOKEN_VALUE = "OAuth2RefreshTokenEntity.getByTokenValue";
 	public static final String QUERY_BY_CLIENT = "OAuth2RefreshTokenEntity.getByClient";
@@ -81,11 +82,12 @@ public class OAuth2RefreshTokenEntity implements OAuth2RefreshToken {
 	// our refresh tokens might expire
 	private Date expiration;
 
-	/**
-	 *
-	 */
-	public OAuth2RefreshTokenEntity() {
+	public OAuth2RefreshTokenEntity(String tokenValue, Instant issuedAt) {
+		super(tokenValue, issuedAt);
+	}
 
+	protected OAuth2RefreshTokenEntity() {
+		super(null, null);
 	}
 
 	/**
@@ -118,7 +120,7 @@ public class OAuth2RefreshTokenEntity implements OAuth2RefreshToken {
 	}
 
 	/**
-	 * @param authentication the authentication to set
+	 * @param authenticationHolder the authentication to set
 	 */
 	public void setAuthenticationHolder(AuthenticationHolderEntity authenticationHolder) {
 		this.authenticationHolder = authenticationHolder;
@@ -127,14 +129,13 @@ public class OAuth2RefreshTokenEntity implements OAuth2RefreshToken {
 	/**
 	 * Get the JWT-encoded value of this token
 	 */
-	@Override
 	@Transient
 	public String getValue() {
 		return jwt.serialize();
 	}
 
 	@Basic
-	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
+	@Temporal(jakarta.persistence.TemporalType.TIMESTAMP)
 	@Column(name = "expiration")
 	public Date getExpiration() {
 		return expiration;

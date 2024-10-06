@@ -16,8 +16,8 @@
 
 package org.mitre.oauth2.model.convert;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 import com.nimbusds.jose.JWSAlgorithm;
 
@@ -34,7 +34,7 @@ public class JWSAlgorithmStringConverter implements AttributeConverter<JWSAlgori
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.persistence.AttributeConverter#convertToEntityAttribute(java.lang.Object)
+	 * @see jakarta.persistence.AttributeConverter#convertToEntityAttribute(java.lang.Object)
 	 */
 	@Override
 	public JWSAlgorithm convertToEntityAttribute(String dbData) {

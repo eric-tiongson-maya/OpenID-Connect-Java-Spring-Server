@@ -18,8 +18,8 @@ package org.mitre.oauth2.model.convert;
 
 import java.text.ParseException;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +46,7 @@ public class JWTStringConverter implements AttributeConverter<JWT, String> {
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.persistence.AttributeConverter#convertToEntityAttribute(java.lang.Object)
+	 * @see jakarta.persistence.AttributeConverter#convertToEntityAttribute(java.lang.Object)
 	 */
 	@Override
 	public JWT convertToEntityAttribute(String dbData) {

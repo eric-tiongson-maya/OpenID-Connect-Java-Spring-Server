@@ -26,28 +26,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.Basic;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-
+import jakarta.persistence.*;
 import org.mitre.oauth2.model.convert.JWEAlgorithmStringConverter;
 import org.mitre.oauth2.model.convert.JWEEncryptionMethodStringConverter;
 import org.mitre.oauth2.model.convert.JWKSetStringConverter;
@@ -56,7 +35,6 @@ import org.mitre.oauth2.model.convert.JWTStringConverter;
 import org.mitre.oauth2.model.convert.PKCEAlgorithmStringConverter;
 import org.mitre.oauth2.model.convert.SimpleGrantedAuthorityStringConverter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.oauth2.provider.ClientDetails;
 
 import com.nimbusds.jose.EncryptionMethod;
 import com.nimbusds.jose.JWEAlgorithm;
@@ -74,7 +52,7 @@ import com.nimbusds.jwt.JWT;
 	@NamedQuery(name = ClientDetailsEntity.QUERY_ALL, query = "SELECT c FROM ClientDetailsEntity c"),
 	@NamedQuery(name = ClientDetailsEntity.QUERY_BY_CLIENT_ID, query = "select c from ClientDetailsEntity c where c.clientId = :" + ClientDetailsEntity.PARAM_CLIENT_ID)
 })
-public class ClientDetailsEntity implements ClientDetails {
+public class ClientDetailsEntity {
 
 	public static final String QUERY_BY_CLIENT_ID = "ClientDetailsEntity.getByClientId";
 	public static final String QUERY_ALL = "ClientDetailsEntity.findAll";
@@ -346,10 +324,6 @@ public class ClientDetailsEntity implements ClientDetails {
 		this.dynamicallyRegistered = dynamicallyRegistered;
 	}
 
-
-
-
-
 	/**
 	 * @return the allowIntrospection
 	 */
@@ -369,7 +343,6 @@ public class ClientDetailsEntity implements ClientDetails {
 	/**
 	 *
 	 */
-	@Override
 	@Transient
 	public boolean isSecretRequired() {
 		if (getTokenEndpointAuthMethod() != null &&
@@ -386,7 +359,6 @@ public class ClientDetailsEntity implements ClientDetails {
 	/**
 	 * If the scope list is not null or empty, then this client has been scoped.
 	 */
-	@Override
 	@Transient
 	public boolean isScoped() {
 		return getScope() != null && !getScope().isEmpty();
@@ -396,7 +368,6 @@ public class ClientDetailsEntity implements ClientDetails {
 	 * @return the clientId
 	 */
 	@Basic
-	@Override
 	@Column(name="client_id")
 	public String getClientId() {
 		return clientId;
@@ -413,7 +384,6 @@ public class ClientDetailsEntity implements ClientDetails {
 	 * @return the clientSecret
 	 */
 	@Basic
-	@Override
 	@Column(name="client_secret")
 	public String getClientSecret() {
 		return clientSecret;
@@ -434,7 +404,6 @@ public class ClientDetailsEntity implements ClientDetails {
 			name="client_scope",
 			joinColumns=@JoinColumn(name="owner_id")
 			)
-	@Override
 	@Column(name="scope")
 	public Set<String> getScope() {
 		return scope;
@@ -470,7 +439,6 @@ public class ClientDetailsEntity implements ClientDetails {
 	/**
 	 * passthrough for SECOAUTH api
 	 */
-	@Override
 	@Transient
 	public Set<String> getAuthorizedGrantTypes() {
 		return getGrantTypes();
@@ -484,7 +452,6 @@ public class ClientDetailsEntity implements ClientDetails {
 			name="client_authority",
 			joinColumns=@JoinColumn(name="owner_id")
 			)
-	@Override
 	@Convert(converter = SimpleGrantedAuthorityStringConverter.class)
 	@Column(name="authority")
 	public Set<GrantedAuthority> getAuthorities() {
@@ -498,7 +465,6 @@ public class ClientDetailsEntity implements ClientDetails {
 		this.authorities = authorities;
 	}
 
-	@Override
 	@Basic
 	@Column(name="access_token_validity_seconds")
 	public Integer getAccessTokenValiditySeconds() {
@@ -512,7 +478,6 @@ public class ClientDetailsEntity implements ClientDetails {
 		this.accessTokenValiditySeconds = accessTokenValiditySeconds;
 	}
 
-	@Override
 	@Basic
 	@Column(name="refresh_token_validity_seconds")
 	public Integer getRefreshTokenValiditySeconds() {
@@ -549,7 +514,6 @@ public class ClientDetailsEntity implements ClientDetails {
 	/**
 	 * Pass-through method to fulfill the ClientDetails interface with a bad name
 	 */
-	@Override
 	@Transient
 	public Set<String> getRegisteredRedirectUri() {
 		return getRedirectUris();
@@ -558,7 +522,6 @@ public class ClientDetailsEntity implements ClientDetails {
 	/**
 	 * @return the resourceIds
 	 */
-	@Override
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(
 			name="client_resource",
@@ -585,14 +548,10 @@ public class ClientDetailsEntity implements ClientDetails {
 	 *
 	 * @return an empty map
 	 */
-	@Override
 	@Transient
 	public Map<String, Object> getAdditionalInformation() {
 		return this.additionalInformation;
 	}
-
-
-
 
 	@Enumerated(EnumType.STRING)
 	@Column(name="application_type")
@@ -960,7 +919,6 @@ public class ClientDetailsEntity implements ClientDetails {
 	/**
 	 * Our framework doesn't use this construct, we use WhitelistedSites and ApprovedSites instead.
 	 */
-	@Override
 	public boolean isAutoApprove(String scope) {
 		return false;
 	}

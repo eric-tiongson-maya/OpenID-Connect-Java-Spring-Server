@@ -16,8 +16,8 @@
 
 package org.mitre.uma.model.convert;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 import org.mitre.oauth2.model.RegisteredClient;
 import org.mitre.openid.connect.ClientDetailsEntityJsonProcessor;
@@ -32,7 +32,7 @@ import com.google.common.base.Strings;
 public class RegisteredClientStringConverter implements AttributeConverter<RegisteredClient, String>{
 
 	/* (non-Javadoc)
-	 * @see javax.persistence.AttributeConverter#convertToDatabaseColumn(java.lang.Object)
+	 * @see jakarta.persistence.AttributeConverter#convertToDatabaseColumn(java.lang.Object)
 	 */
 	@Override
 	public String convertToDatabaseColumn(RegisteredClient attribute) {
@@ -45,7 +45,7 @@ public class RegisteredClientStringConverter implements AttributeConverter<Regis
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.persistence.AttributeConverter#convertToEntityAttribute(java.lang.Object)
+	 * @see jakarta.persistence.AttributeConverter#convertToEntityAttribute(java.lang.Object)
 	 */
 	@Override
 	public RegisteredClient convertToEntityAttribute(String dbData) {

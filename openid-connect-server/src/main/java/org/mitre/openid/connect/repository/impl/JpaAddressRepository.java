@@ -17,8 +17,8 @@
  *******************************************************************************/
 package org.mitre.openid.connect.repository.impl;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 import org.mitre.openid.connect.model.Address;
 import org.mitre.openid.connect.repository.AddressRepository;

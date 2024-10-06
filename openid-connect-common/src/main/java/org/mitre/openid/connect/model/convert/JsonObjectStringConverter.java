@@ -16,8 +16,8 @@
 
 package org.mitre.openid.connect.model.convert;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 import com.google.common.base.Strings;
 import com.google.gson.JsonObject;
@@ -42,7 +42,7 @@ public class JsonObjectStringConverter implements AttributeConverter<JsonObject,
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.persistence.AttributeConverter#convertToEntityAttribute(java.lang.Object)
+	 * @see jakarta.persistence.AttributeConverter#convertToEntityAttribute(java.lang.Object)
 	 */
 	@Override
 	public JsonObject convertToEntityAttribute(String dbData) {

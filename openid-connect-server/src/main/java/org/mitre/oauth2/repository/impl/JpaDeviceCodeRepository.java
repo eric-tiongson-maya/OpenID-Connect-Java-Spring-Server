@@ -24,9 +24,9 @@ import static org.mitre.util.jpa.JpaUtil.saveOrUpdate;
 import java.util.Collection;
 import java.util.Date;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 
 import org.mitre.oauth2.model.DeviceCode;
 import org.springframework.stereotype.Repository;

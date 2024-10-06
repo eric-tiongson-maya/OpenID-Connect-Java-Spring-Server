@@ -20,21 +20,21 @@ package org.mitre.openid.connect.model;
 import java.util.Date;
 import java.util.Set;
 
-import javax.persistence.Basic;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.Transient;
+import jakarta.persistence.Basic;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name="approved_site")
@@ -110,7 +110,7 @@ public class ApprovedSite {
 	}
 
 	/**
-	 * @param userInfo the userInfo to set
+	 * @param userId the userInfo to set
 	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
@@ -136,7 +136,7 @@ public class ApprovedSite {
 	 * @return the creationDate
 	 */
 	@Basic
-	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
+	@Temporal(jakarta.persistence.TemporalType.TIMESTAMP)
 	@Column(name="creation_date")
 	public Date getCreationDate() {
 		return creationDate;
@@ -153,7 +153,7 @@ public class ApprovedSite {
 	 * @return the accessDate
 	 */
 	@Basic
-	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
+	@Temporal(jakarta.persistence.TemporalType.TIMESTAMP)
 	@Column(name="access_date")
 	public Date getAccessDate() {
 		return accessDate;
@@ -190,7 +190,7 @@ public class ApprovedSite {
 	 * @return the timeoutDate
 	 */
 	@Basic
-	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
+	@Temporal(jakarta.persistence.TemporalType.TIMESTAMP)
 	@Column(name="timeout_date")
 	public Date getTimeoutDate() {
 		return timeoutDate;

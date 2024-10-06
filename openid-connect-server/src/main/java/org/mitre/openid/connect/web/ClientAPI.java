@@ -22,7 +22,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.text.ParseException;
 import java.util.Collection;
 
-import javax.persistence.PersistenceException;
+import jakarta.persistence.PersistenceException;
 
 import org.eclipse.persistence.exceptions.DatabaseException;
 import org.mitre.jwt.assertion.AssertionValidator;

@@ -16,8 +16,8 @@
 
 package org.mitre.oauth2.model.convert;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 

@@ -23,9 +23,9 @@ package org.mitre.oauth2.repository.impl;
 import java.util.Collection;
 import java.util.Date;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 
 import org.mitre.data.PageCriteria;
 import org.mitre.oauth2.model.AuthorizationCodeEntity;

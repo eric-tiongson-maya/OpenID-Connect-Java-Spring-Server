@@ -29,7 +29,6 @@ public interface ClientDetailsEntityService extends ClientDetailsService {
 
 	public ClientDetailsEntity getClientById(Long id);
 
-	@Override
 	public ClientDetailsEntity loadClientByClientId(String clientId) throws OAuth2Exception;
 
 	public void deleteClient(ClientDetailsEntity client);

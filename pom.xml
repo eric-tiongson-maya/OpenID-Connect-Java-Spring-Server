@@ -20,15 +20,9 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mitre</groupId>
 	<artifactId>openid-connect-parent</artifactId>
-	<version>1.3.5-SNAPSHOT</version>
+	<version>21.0.0-SNAPSHOT</version>
 	<name>MITREid Connect</name>
 	<packaging>pom</packaging>
-	<parent>
-		<groupId>org.sonatype.oss</groupId>
-		<artifactId>oss-parent</artifactId>
-		<version>9</version>
-		<relativePath />
-	</parent>
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
@@ -72,6 +66,7 @@
 	<properties>
 		<java-version>11</java-version>
 		<org.slf4j-version>1.7.25</org.slf4j-version>
+		<spring-security-oauth2-autoconfigure.version>2.6.8</spring-security-oauth2-autoconfigure.version>
 	</properties>
 	<description>A reference implementation of OpenID Connect (http://openid.net/connect/), OAuth 2.0, and UMA built on top of Java, Spring, and Spring Security. The project contains a fully functioning server, client, and utility library.</description>
 	<url>https://github.com/mitreid-connect</url>
@@ -81,53 +76,53 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>3.0.2</version>
+					<version>3.4.2</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-war-plugin</artifactId>
-					<version>3.0.0</version>
+					<version>3.4.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.10.4</version>
+					<version>3.10.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.jacoco</groupId>
 					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>0.8.7</version>
+					<version>0.8.12</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-checkstyle-plugin</artifactId>
-					<version>2.10</version>
+					<version>3.5.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-deploy-plugin</artifactId>
-					<version>2.8.2</version>
+					<version>3.1.3</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-source-plugin</artifactId>
-					<version>3.0.1</version>
+					<version>3.3.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.6.1</version>
+					<version>3.13.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.eclipse.jetty</groupId>
 					<artifactId>jetty-maven-plugin</artifactId>
-					<version>9.4.3.v20170317</version>
+					<version>11.0.24</version>
 				</plugin>
 				<plugin>
 					<inherited>true</inherited>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-enforcer-plugin</artifactId>
-					<version>1.4.1</version>
+					<version>3.5.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.appfuse.plugins</groupId>
@@ -137,12 +132,12 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
-					<version>3.6</version>
+					<version>3.20.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-project-info-reports-plugin</artifactId>
-					<version>2.9</version>
+					<version>3.7.0</version>
 				</plugin>
 				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
 				<plugin>
@@ -178,7 +173,7 @@
 				<plugin>
 					<groupId>ro.isdc.wro4j</groupId>
 					<artifactId>wro4j-maven-plugin</artifactId>
-					<version>1.10.0</version>
+					<version>2.1.1</version>
 					<executions>
 						<execution>
 							<phase>compile</phase>
@@ -191,7 +186,7 @@
 						<dependency>
 							<groupId>ro.isdc.wro4j</groupId>
 							<artifactId>wro4j-extensions</artifactId>
-							<version>1.10.0</version>
+							<version>2.1.1</version>
 						</dependency>
 					</dependencies>
 				</plugin>
@@ -283,69 +278,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
 				<configuration>
-					<reportPlugins>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-project-info-reports-plugin</artifactId>
-							<configuration>
-								<dependencyDetailsEnabled>false</dependencyDetailsEnabled>
-								<dependencyLocationsEnabled>false</dependencyLocationsEnabled>
-							</configuration>
-							<reports>
-								<report>index</report>
-								<report>cim</report>
-								<report>dependencies</report>
-								<report>dependency-convergence</report>
-<!-- 								<report>dependency-info</report> -->
-								<report>dependency-management</report>
-								<report>help</report>
-								<report>issue-tracking</report>
-								<report>license</report>
-								<report>mailing-list</report>
-								<report>modules</report>
-								<report>plugin-management</report>
-								<report>plugins</report>
-								<report>project-team</report>
-								<report>scm</report>
-								<report>summary</report>
-							</reports>
-						</plugin>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-javadoc-plugin</artifactId>
-							<configuration>
-								<author>true</author>
-								<version>true</version>
-								<use>true</use>
-								<linksource>true</linksource>
-								<windowtitle>MITREid Connect ${project.name} v. ${project.version}</windowtitle>
-								<doctitle>MITREid Connect ${project.name} v. ${project.version}</doctitle>
-								<overview>${basedir}/src/main/javadoc/overview.html</overview>
-								<additionalparam>-Xdoclint:none</additionalparam>
-							</configuration>
-						</plugin>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-checkstyle-plugin</artifactId>
-							<configuration>
-								<configLocation>checkstyle.xml</configLocation>
-							</configuration>
-						</plugin>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-surefire-plugin</artifactId>
-							<configuration>
-								<junitArtifactName>junit:junit</junitArtifactName>
-								<excludes>
-									<exclude>**/*_Roo_*</exclude>
-								</excludes>
-							</configuration>
-						</plugin>
-						<plugin>
-							<groupId>org.jacoco</groupId>
-							<artifactId>jacoco-maven-plugin</artifactId>
-						</plugin>
-					</reportPlugins>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -365,7 +297,7 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-framework-bom</artifactId>
-				<version>5.3.9</version>
+				<version>6.1.13</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -374,26 +306,17 @@
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-databind</artifactId>
-				<version>2.9.8</version>
+				<version>2.18.0</version>
 			</dependency>
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-annotations</artifactId>
-				<version>2.9.8</version>
-			</dependency>
-
-			<!-- Spring Security -->
-			<dependency>
-				<groupId>org.springframework.security</groupId>
-				<artifactId>spring-security-bom</artifactId>
-				<version>5.5.2</version>
-				<type>pom</type>
-				<scope>import</scope>
+				<version>2.18.0</version>
 			</dependency>
 			<dependency>
-				<groupId>org.springframework.security.oauth</groupId>
-				<artifactId>spring-security-oauth2</artifactId>
-				<version>2.1.0.RELEASE</version>
+				<groupId>com.fasterxml.jackson.module</groupId>
+				<artifactId>jackson-module-jsonSchema</artifactId>
+				<version>2.18.0</version>
 			</dependency>
 
 			<!-- Servlet -->
@@ -439,19 +362,18 @@
 			<dependency>
 				<groupId>org.eclipse.persistence</groupId>
 				<artifactId>org.eclipse.persistence.jpa</artifactId>
-				<version>2.7.4</version>
+				<version>4.0.4</version>
 			</dependency>
 			<dependency>
-				<groupId>org.eclipse.persistence</groupId>
-				<artifactId>javax.persistence</artifactId>
-				<version>2.2.1</version>
+				<groupId>jakarta.persistence</groupId>
+				<artifactId>jakarta.persistence-api</artifactId>
+				<version>3.2.0</version>
 			</dependency>
 			<dependency>
 				<groupId>com.zaxxer</groupId>
 				<artifactId>HikariCP</artifactId>
 				<version>2.6.1</version>
 			</dependency>
-
 
 			<!-- Logging -->
 			<dependency>
@@ -505,7 +427,7 @@
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>4.12</version>
+				<version>4.13.2</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
@@ -639,6 +561,50 @@
 
 
 	<dependencies>
+		<!-- Spring Security -->
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.security.oauth.boot</groupId>-->
+<!--			<artifactId>spring-security-oauth2-autoconfigure</artifactId>-->
+<!--			<version>${spring-security-oauth2-autoconfigure.version}</version>-->
+<!--		</dependency>-->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-bom</artifactId>
+			<version>6.3.3</version>
+			<type>pom</type>
+			<scope>import</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>6.3.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-oauth2-core</artifactId>
+			<version>6.3.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-oauth2-client</artifactId>
+			<version>6.3.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-oauth2-authorization-server</artifactId>
+			<version>1.3.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-oauth2-resource-server</artifactId>
+			<version>6.3.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-oauth2-jose</artifactId>
+			<version>6.3.3</version>
+		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

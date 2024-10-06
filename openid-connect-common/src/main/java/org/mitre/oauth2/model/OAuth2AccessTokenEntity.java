@@ -20,43 +20,46 @@
  */
 package org.mitre.oauth2.model;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.Transient;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import jakarta.persistence.Basic;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.Transient;
 
 import org.mitre.oauth2.model.convert.JWTStringConverter;
+import org.mitre.oauth2.model.convert.OAuth2TokenDeserializer;
+import org.mitre.oauth2.model.convert.OAuth2TokenSerializer;
 import org.mitre.openid.connect.model.ApprovedSite;
 import org.mitre.uma.model.Permission;
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.security.oauth2.common.OAuth2AccessTokenJackson1Deserializer;
-import org.springframework.security.oauth2.common.OAuth2AccessTokenJackson1Serializer;
-import org.springframework.security.oauth2.common.OAuth2AccessTokenJackson2Deserializer;
-import org.springframework.security.oauth2.common.OAuth2AccessTokenJackson2Serializer;
-import org.springframework.security.oauth2.common.OAuth2RefreshToken;
+
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 
 import com.nimbusds.jwt.JWT;
+import org.springframework.security.oauth2.core.OAuth2RefreshToken;
 
 /**
  * @author jricher
@@ -74,11 +77,9 @@ import com.nimbusds.jwt.JWT;
 	@NamedQuery(name = OAuth2AccessTokenEntity.QUERY_BY_RESOURCE_SET, query = "select a from OAuth2AccessTokenEntity a join a.permissions p where p.resourceSet.id = :" + OAuth2AccessTokenEntity.PARAM_RESOURCE_SET_ID),
 	@NamedQuery(name = OAuth2AccessTokenEntity.QUERY_BY_NAME, query = "select r from OAuth2AccessTokenEntity r where r.authenticationHolder.userAuth.name = :" + OAuth2AccessTokenEntity.PARAM_NAME)
 })
-@org.codehaus.jackson.map.annotate.JsonSerialize(using = OAuth2AccessTokenJackson1Serializer.class)
-@org.codehaus.jackson.map.annotate.JsonDeserialize(using = OAuth2AccessTokenJackson1Deserializer.class)
-@com.fasterxml.jackson.databind.annotation.JsonSerialize(using = OAuth2AccessTokenJackson2Serializer.class)
-@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = OAuth2AccessTokenJackson2Deserializer.class)
-public class OAuth2AccessTokenEntity implements OAuth2AccessToken {
+@JsonSerialize(using = OAuth2TokenSerializer.class)
+@JsonDeserialize(using = OAuth2TokenDeserializer.class)
+public class OAuth2AccessTokenEntity extends OAuth2AccessToken {
 
 	public static final String QUERY_BY_APPROVED_SITE = "OAuth2AccessTokenEntity.getByApprovedSite";
 	public static final String QUERY_BY_TOKEN_VALUE = "OAuth2AccessTokenEntity.getByTokenValue";
@@ -109,7 +110,7 @@ public class OAuth2AccessTokenEntity implements OAuth2AccessToken {
 
 	private Date expiration;
 
-	private String tokenType = OAuth2AccessToken.BEARER_TYPE;
+	private TokenType tokenType = TokenType.BEARER;
 
 	private OAuth2RefreshTokenEntity refreshToken;
 
@@ -121,11 +122,12 @@ public class OAuth2AccessTokenEntity implements OAuth2AccessToken {
 
 	private Map<String, Object> additionalInformation = new HashMap<>(); // ephemeral map of items to be added to the OAuth token response
 
-	/**
-	 * Create a new, blank access token
-	 */
-	public OAuth2AccessTokenEntity() {
+	public OAuth2AccessTokenEntity(TokenType tokenType, String tokenValue, Instant issuedAt, Instant expiresAt) {
+		super(tokenType, tokenValue, issuedAt, expiresAt);
+	}
 
+	protected OAuth2AccessTokenEntity() {
+		super(null, null, null, null);
 	}
 
 	/**
@@ -149,7 +151,6 @@ public class OAuth2AccessTokenEntity implements OAuth2AccessToken {
 	 * Get all additional information to be sent to the serializer as part of the token response.
 	 * This map is not persisted to the database.
 	 */
-	@Override
 	@Transient
 	public Map<String, Object> getAdditionalInformation() {
 		return additionalInformation;
@@ -166,7 +167,7 @@ public class OAuth2AccessTokenEntity implements OAuth2AccessToken {
 	}
 
 	/**
-	 * @param authentication the authentication to set
+	 * @param authenticationHolder the authentication to set
 	 */
 	public void setAuthenticationHolder(AuthenticationHolderEntity authenticationHolder) {
 		this.authenticationHolder = authenticationHolder;
@@ -191,15 +192,13 @@ public class OAuth2AccessTokenEntity implements OAuth2AccessToken {
 	/**
 	 * Get the string-encoded value of this access token.
 	 */
-	@Override
 	@Transient
 	public String getValue() {
 		return jwtValue.serialize();
 	}
 
-	@Override
 	@Basic
-	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
+	@Temporal(jakarta.persistence.TemporalType.TIMESTAMP)
 	@Column(name = "expiration")
 	public Date getExpiration() {
 		return expiration;
@@ -210,17 +209,20 @@ public class OAuth2AccessTokenEntity implements OAuth2AccessToken {
 	}
 
 	@Override
-	@Basic
-	@Column(name="token_type")
-	public String getTokenType() {
+	public TokenType getTokenType() {
 		return tokenType;
 	}
 
-	public void setTokenType(String tokenType) {
+	public void setTokenType(TokenType tokenType) {
 		this.tokenType = tokenType;
 	}
 
-	@Override
+	@Basic
+	@Column(name = "token_type")
+	public String getTokenTypeValue() {
+		return getTokenType().getValue();
+	}
+
 	@ManyToOne
 	@JoinColumn(name="refresh_token_id")
 	public OAuth2RefreshTokenEntity getRefreshToken() {
@@ -239,7 +241,6 @@ public class OAuth2AccessTokenEntity implements OAuth2AccessToken {
 		setRefreshToken((OAuth2RefreshTokenEntity)refreshToken);
 	}
 
-	@Override
 	@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(
 			joinColumns=@JoinColumn(name="owner_id"),
@@ -253,7 +254,6 @@ public class OAuth2AccessTokenEntity implements OAuth2AccessToken {
 		this.scope = scope;
 	}
 
-	@Override
 	@Transient
 	public boolean isExpired() {
 		return getExpiration() == null ? false : System.currentTimeMillis() > getExpiration().getTime();
@@ -270,13 +270,12 @@ public class OAuth2AccessTokenEntity implements OAuth2AccessToken {
 	}
 
 	/**
-	 * @param jwtValue the jwtValue to set
+	 * @param jwt the jwtValue to set
 	 */
 	public void setJwt(JWT jwt) {
 		this.jwtValue = jwt;
 	}
 
-	@Override
 	@Transient
 	public int getExpiresIn() {
 

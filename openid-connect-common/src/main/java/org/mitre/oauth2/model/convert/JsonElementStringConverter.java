@@ -16,8 +16,8 @@
 
 package org.mitre.oauth2.model.convert;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 import com.google.common.base.Strings;
 import com.google.gson.JsonElement;
@@ -42,7 +42,7 @@ public class JsonElementStringConverter implements AttributeConverter<JsonElemen
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.persistence.AttributeConverter#convertToEntityAttribute(java.lang.Object)
+	 * @see jakarta.persistence.AttributeConverter#convertToEntityAttribute(java.lang.Object)
 	 */
 	@Override
 	public JsonElement convertToEntityAttribute(String dbData) {

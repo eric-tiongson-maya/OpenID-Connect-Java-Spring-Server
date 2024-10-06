@@ -23,9 +23,9 @@ package org.mitre.openid.connect.repository.impl;
 import static org.mitre.util.jpa.JpaUtil.getSingleResult;
 import static org.mitre.util.jpa.JpaUtil.saveOrUpdate;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 
 import org.mitre.openid.connect.model.PairwiseIdentifier;
 import org.mitre.openid.connect.repository.PairwiseIdentifierRepository;

@@ -18,9 +18,9 @@ package org.mitre.uma.repository.impl;
 
 import java.util.Collection;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 
 import org.mitre.uma.model.Permission;
 import org.mitre.uma.model.PermissionTicket;
